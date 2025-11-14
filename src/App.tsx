@@ -237,7 +237,7 @@ export default function App() {
   };
 
   const filteredGifts = gifts.filter(gift => {
-    if (filter === 'available') return !gift.selectedBy;
+    if (filter === 'available') return !gift.selectedBy && !gift.pendingBy && !gift.alreadyOwned;
     if (filter === 'mine') return gift.selectedBy === guestName || gift.pendingBy === guestName;
     return true;
   });

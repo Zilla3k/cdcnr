@@ -17,12 +17,13 @@ export function GiftItem({ gift, currentGuest, onTogglePending, onCancelConfirme
   const isConfirmedByMe = gift.selectedBy === currentGuest;
   const isConfirmedByOther = isConfirmed && !isConfirmedByMe;
   const isPendingByMe = gift.pendingBy === currentGuest;
-  const isAvailable = !isConfirmed && !gift.alreadyOwned;
+  const isPendingByOther = gift.pendingBy && !isPendingByMe;
+  const isAvailable = !isConfirmed && !isPendingByOther && !gift.alreadyOwned;
 
   return (
     <div
       className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 rounded-lg border transition-all gap-3 ${
-        isConfirmedByOther || gift.alreadyOwned
+        isConfirmedByOther || isPendingByOther || gift.alreadyOwned
           ? 'bg-gray-50 border-gray-200 opacity-60'
           : isPendingByMe
           ? 'bg-pink-50 border-pink-300 shadow-sm'
@@ -35,7 +36,7 @@ export function GiftItem({ gift, currentGuest, onTogglePending, onCancelConfirme
         <div className="flex items-start gap-2 flex-wrap">
           <p
             className={`flex-1 min-w-0 ${
-              isConfirmedByOther || gift.alreadyOwned
+              isConfirmedByOther || isPendingByOther || gift.alreadyOwned
                 ? 'line-through text-gray-500'
                 : isConfirmedByMe
                 ? 'text-green-600'
@@ -64,7 +65,12 @@ export function GiftItem({ gift, currentGuest, onTogglePending, onCancelConfirme
             Escolhido por {gift.selectedBy}
           </p>
         )}
-        {gift.alreadyOwned && !isConfirmedByOther && (
+        {isPendingByOther && (
+          <p className="text-gray-500 mt-1">
+            Reservado temporariamente por {gift.pendingBy}
+          </p>
+        )}
+        {gift.alreadyOwned && !isConfirmedByOther && !isPendingByOther && (
           <p className="text-gray-500 mt-1">
             Os anfitriões já possuem este item
           </p>
@@ -122,7 +128,7 @@ export function GiftItem({ gift, currentGuest, onTogglePending, onCancelConfirme
                 disabled
                 className="text-gray-400 flex-1 sm:flex-initial"
               >
-                Indisponível
+                {isPendingByOther ? 'Reservado' : 'Indisponível'}
               </Button>
             )}
           </>
