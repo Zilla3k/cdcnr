@@ -67,7 +67,7 @@ export function ConfirmGiftsButton({ pendingCount, onConfirm, onFinalize }: Conf
       </Card>
 
       <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <AlertDialogContent className="mx-4 max-w-md">
+        <AlertDialogContent className="max-w-md">
           <AlertDialogHeader>
             {hasConflicts ? (
               <>

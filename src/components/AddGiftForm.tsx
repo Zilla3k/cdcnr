@@ -4,18 +4,15 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Plus, AlertCircle } from 'lucide-react';
-import { Alert, AlertDescription } from './ui/alert';
+import { Plus } from 'lucide-react';
 
 interface AddGiftFormProps {
   onAdd: (giftName: string, category?: string) => void;
-  error?: string;
-  onInputChange?: () => void;
 }
 
 const categories = ['Cozinha', 'Banho', 'Quarto', 'Lavanderia', 'Limpeza', 'Decoração', 'Outro'];
 
-export function AddGiftForm({ onAdd, error, onInputChange }: AddGiftFormProps) {
+export function AddGiftForm({ onAdd }: AddGiftFormProps) {
   const [newGiftName, setNewGiftName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
 
@@ -29,14 +26,8 @@ export function AddGiftForm({ onAdd, error, onInputChange }: AddGiftFormProps) {
 
   return (
     <Card className="p-4 sm:p-6 border-dashed border-2 border-pink-200 bg-pink-50/30">
-      <h3 className="mb-4 text-gray-700">Adicionar Novo Presente</h3>
+      <h3 className="mb-4 text-gray-700">Caso queira nos presentear com algo que não esteja na lista</h3>
       <form onSubmit={handleSubmit} className="space-y-3">
-        {error && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1">
             <Label htmlFor="new-gift" className="sr-only">
@@ -46,11 +37,7 @@ export function AddGiftForm({ onAdd, error, onInputChange }: AddGiftFormProps) {
               id="new-gift"
               placeholder="Ex: Cafeteira elétrica"
               value={newGiftName}
-              onChange={(e) => {
-                setNewGiftName(e.target.value);
-                onInputChange?.();
-              }}
-              className={error ? 'border-red-500' : ''}
+              onChange={(e) => setNewGiftName(e.target.value)}
             />
           </div>
           <div className="w-full sm:w-40">

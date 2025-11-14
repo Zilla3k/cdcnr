@@ -17,8 +17,6 @@ export interface GiftItem {
   alreadyOwned: boolean;
 }
 
-const ADMIN_PASSWORD = 'admin123'; // Altere isso para sua senha
-
 export default function App() {
   const [guestName, setGuestName] = useState<string>('');
   const [showWelcome, setShowWelcome] = useState(true);
@@ -26,7 +24,6 @@ export default function App() {
   const [filter, setFilter] = useState<'all' | 'available' | 'mine'>('all');
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [addGiftError, setAddGiftError] = useState<string>('');
 
   // Converter GiftRow do Supabase para GiftItem
   const convertGiftRow = (row: db.GiftRow): GiftItem => ({
@@ -78,7 +75,7 @@ export default function App() {
   const handleWelcomeSubmit = (name: string, password?: string) => {
     setGuestName(name);
     setShowWelcome(false);
-    if (password === ADMIN_PASSWORD) {
+    if (password === import.meta.env.VITE_ADMIN_PASSWORD) {
       setIsAdmin(true);
       toast.success('Bem-vindo, Anfitrião!');
     }
@@ -237,13 +234,6 @@ export default function App() {
     }
   };
 
-  const handleAddGiftInputChange = () => {
-    // Limpar erro quando o usuário começar a digitar
-    if (addGiftError) {
-      setAddGiftError('');
-    }
-  };
-
   const filteredGifts = gifts.filter(gift => {
     if (filter === 'available') return !gift.selectedBy;
     if (filter === 'mine') return gift.selectedBy === guestName || gift.pendingBy === guestName;
@@ -301,8 +291,6 @@ export default function App() {
               onFilterChange={setFilter}
               onToggleAlreadyOwned={handleToggleAlreadyOwned}
               isAdmin={isAdmin}
-              addGiftError={addGiftError}
-              onAddGiftInputChange={handleAddGiftInputChange}
             />
           </div>
         </div>

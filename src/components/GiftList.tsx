@@ -24,8 +24,6 @@ interface GiftListProps {
   onFilterChange: (filter: 'all' | 'available' | 'mine') => void;
   onToggleAlreadyOwned: (giftId: string) => void;
   isAdmin: boolean;
-  addGiftError?: string;
-  onAddGiftInputChange?: () => void;
 }
 
 export function GiftList({ 
@@ -40,9 +38,7 @@ export function GiftList({
   onAddGift, 
   onFilterChange,
   onToggleAlreadyOwned,
-  isAdmin,
-  addGiftError,
-  onAddGiftInputChange
+  isAdmin
 }: GiftListProps) {
   // Group by category
   const categories = Array.from(new Set(gifts.map(g => g.category).filter(Boolean))) as string[];
@@ -107,7 +103,7 @@ export function GiftList({
         )}
       </div>
 
-      <AddGiftForm onAdd={onAddGift} error={addGiftError} onInputChange={onAddGiftInputChange} />
+      <AddGiftForm onAdd={onAddGift} />
     </div>
   );
 }
