@@ -26,7 +26,6 @@ export default function App() {
   const [filter, setFilter] = useState<'all' | 'available' | 'mine'>('all');
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [addGiftError, setAddGiftError] = useState<string>('');
 
   // Converter GiftRow do Supabase para GiftItem
   const convertGiftRow = (row: db.GiftRow): GiftItem => ({
@@ -237,13 +236,6 @@ export default function App() {
     }
   };
 
-  const handleAddGiftInputChange = () => {
-    // Limpar erro quando o usuário começar a digitar
-    if (addGiftError) {
-      setAddGiftError('');
-    }
-  };
-
   const filteredGifts = gifts.filter(gift => {
     if (filter === 'available') return !gift.selectedBy;
     if (filter === 'mine') return gift.selectedBy === guestName || gift.pendingBy === guestName;
@@ -301,8 +293,6 @@ export default function App() {
               onFilterChange={setFilter}
               onToggleAlreadyOwned={handleToggleAlreadyOwned}
               isAdmin={isAdmin}
-              addGiftError={addGiftError}
-              onAddGiftInputChange={handleAddGiftInputChange}
             />
           </div>
         </div>
